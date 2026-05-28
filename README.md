@@ -1,6 +1,6 @@
 # zzang-codex-skills
 
-Codex CLI custom skills by kimseungzzang — session context shared with [zzang-claude-skills](https://github.com/Kimseungzzang/kimseungzzang-claude-skills).
+Codex CLI custom skills by kimseungzzang — session context shared with [zzang-claude-skills](https://github.com/Kimseungzzang/zzang-claude-skills).
 
 ## Install
 
