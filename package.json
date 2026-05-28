@@ -1,0 +1,12 @@
+{
+  "name": "zzang-codex-skills",
+  "version": "1.0.0",
+  "description": "Codex CLI custom skills by kimseungzzang — shares session context with zzang-claude-skills",
+  "main": "bin/install.js",
+  "scripts": {
+    "install-skills": "node bin/install.js"
+  },
+  "keywords": ["codex", "codex-cli", "skills"],
+  "author": "kimseungzzang",
+  "license": "MIT"
+}
