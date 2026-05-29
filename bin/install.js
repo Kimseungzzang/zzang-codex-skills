@@ -51,11 +51,10 @@ async function promptRepoUrl(rl, label) {
     if (result.ok) {
       console.log('✅ found');
       return url.trim();
-    } else {
-      console.log(`❌ ${result.error}`);
-      const retry = await ask(rl, '   Try a different URL? (Y/n) ');
-      if (retry.toLowerCase() === 'n') return null;
     }
+    console.log(`❌ ${result.error}`);
+    const retry = await ask(rl, '   Try a different URL? (Y/n) ');
+    if (retry.toLowerCase() === 'n') return null;
   }
 }
 
@@ -74,9 +73,10 @@ function installScripts() {
 
 function installHooks() {
   const hooks = {
+    PreToolUse: { command: '~/.zzang/scripts/git-conventions-check.sh', label: 'git-conventions-check.sh' },
     PostToolUse: { command: '~/.zzang/scripts/task-log.sh', label: 'task-log.sh' },
-    Stop:        { command: '~/.zzang/scripts/dragon-notify.sh', label: 'dragon-notify.sh' },
-    PreCompact:  { command: '~/.zzang/scripts/pre-compact-backup.sh', label: 'pre-compact-backup.sh' },
+    Stop: { command: '~/.zzang/scripts/dragon-notify.sh', label: 'dragon-notify.sh' },
+    PreCompact: { command: '~/.zzang/scripts/pre-compact-backup.sh', label: 'pre-compact-backup.sh' },
   };
 
   let config = { hooks: {} };
@@ -114,7 +114,7 @@ async function setupSessionsRepo(rl) {
     console.log('\n📦 /session-save and /session-load need a private git repo to store context.');
     const setup = await ask(rl, '   Set it up now? (Y/n) ');
     if (setup.toLowerCase() === 'n') {
-      console.log('   Skipped. Run `node bin/install.js` again anytime to set it up.');
+      console.log('   Skipped. Run `npx zzang-codex-skills` again anytime to set it up.');
       return;
     }
   }
@@ -144,6 +144,8 @@ async function setupSessionsRepo(rl) {
       if (fallback) {
         fs.writeFileSync(SESSIONS_REMOTE_FILE, fallback);
         console.log(`\n   ✅ Saved: ${fallback}`);
+      } else {
+        console.log('   Skipped. Run `npx zzang-codex-skills` again to configure.');
       }
     }
   } else {
@@ -151,6 +153,8 @@ async function setupSessionsRepo(rl) {
     if (url) {
       fs.writeFileSync(SESSIONS_REMOTE_FILE, url);
       console.log(`\n   ✅ Saved: ${url}`);
+    } else {
+      console.log('   Skipped. Run `npx zzang-codex-skills` again to configure.');
     }
   }
 }
@@ -160,7 +164,6 @@ async function main() {
 
   console.log('\n🚀 zzang-codex-skills installing...\n');
 
-  // 1. Skills
   const skillDirs = fs.readdirSync(SOURCE_DIR).filter(f =>
     fs.statSync(path.join(SOURCE_DIR, f)).isDirectory()
   );
@@ -175,15 +178,12 @@ async function main() {
     console.log(`${isUpdate ? '🔄 updated' : '✅ installed'}: /${dir}`);
   });
 
-  // 2. Scripts
   console.log('');
   installScripts();
 
-  // 3. Hooks
   console.log('');
   installHooks();
 
-  // 4. Sessions repo
   await setupSessionsRepo(rl);
 
   rl.close();

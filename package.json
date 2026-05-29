@@ -6,7 +6,19 @@
   "scripts": {
     "install-skills": "node bin/install.js"
   },
-  "keywords": ["codex", "codex-cli", "skills"],
+  "keywords": [
+    "codex",
+    "codex-cli",
+    "skills"
+  ],
   "author": "kimseungzzang",
-  "license": "MIT"
+  "license": "MIT",
+  "bin": {
+    "zzang-codex-skills": "bin/install.js"
+  },
+  "files": [
+    "bin/",
+    "skills/",
+    "scripts/"
+  ]
 }
